@@ -21,16 +21,7 @@ class Game(object):
     
     #will implement resource loading here
     
-    #CREEP_FILENAMES = [
-    #    ('images/bluecreep_0.png', 'images/bluecreep_45.png'),
-    #    ('images/greencreep_0.png', 'images/greencreep_45.png'),
-    #    ('images/yellowcreep_0.png', 'images/yellowcreep_45.png'),
-    #    ('images/pinkcreep_0.png', 'images/pinkcreep_45.png'),
-    #]
-    
     #Arbitrary game constants. Will make cheating easy.
-    
-    MAX_N_CREEPS = 50
 
     def __init__(self):
         pygame.init()

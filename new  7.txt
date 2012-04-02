@@ -1,0 +1,51 @@
+class Button(object):
+        """     Employs some crap from Box to draw a rectangular button, 
+                has some methods to handle click events.
+        """"
+        
+        def __init__(self, surface, rect, type, bgimg, attached):
+                self.surface = surface
+                self.rect = rect
+                self.type = type
+                self.bgimg = bgimg
+                
+                self.width, self.height = self.bgimg.get_size()
+                
+                self.state = UNCLICKED
+                
+                self.attached = attached
+                
+        def draw(self):
+                if self.is_visible():
+                        pygame.draw.rect(self.surface, self.border_color, self.rect)
+                
+        def mouse_click_event(self, pos):
+                if self.type = "Close":
+                        if self._point_is_inside(vec2d(pos)):
+                                self.state = Button.CLICKING
+                                Game.close_widget(self.attached)
+                                Button._close_widget(self)
+                else
+                        continue                        
+        
+        def is_visible(self):
+                return self.state = Button.UNCLICKED
+        
+        (UNCLICKED, CLICKING, CLICKED) = range(3)
+        
+        #This will eventually be replaced with a more generic funciton
+        #so we can pass in a pos and 2d vector and tell if we've clicked on something
+        def _close_widget(self):
+                self.state = Button.CLICKED
+                self.kill()
+        
+        def _point_is_inside(self, point):
+                img_point = point - vec2d(  
+                        int(self.width / 2),
+                        int(self.width / 2))
+        
+                try:
+                        pix = self.image.get_at(img_point)
+                        return pix[3] > 0
+                except IndexError:
+                        return False
