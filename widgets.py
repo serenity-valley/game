@@ -11,7 +11,7 @@ import sys
 
 import pygame
 from pygame import Rect, Color
-
+from vec2d import vec2d
 
 class WidgetError(Exception): pass
 class LayoutError(WidgetError): pass
@@ -159,11 +159,10 @@ class Button(object):
                         self.surface.blit(self.bgimg, self.rect)
                 
         def mouse_click_event(self, pos):
-                if self.btntype == "Close":
-                        if self._point_is_inside(vec2d(pos)):
-                                self.state = Button.CLICKING
-                                Game.close_widget(self.attached)
-                                Button._close_widget(self)
+                if self._point_is_inside(vec2d(pos)):
+                        self.state = Button.CLICKING
+                        Game.close_widget(self.attached)
+                        self.state = Button.CLICKED
         
         def is_visible(self):
                 return self.state == Button.UNCLICKED or self.state == Button.CLICKING
@@ -176,10 +175,9 @@ class Button(object):
         def _point_is_inside(self, point):
                 img_point = point - vec2d(  
                         int(self.width / 2),
-                        int(self.width / 2))
-        
+                        int(self.height / 2))
                 try:
-                        pix = self.image.get_at(img_point)
+                        pix = self.bgimg.get_at(img_point)
                         return pix[3] > 0
                 except IndexError:
                         return False
