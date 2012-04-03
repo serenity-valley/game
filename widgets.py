@@ -106,7 +106,7 @@ class MessageBoard(object):
         
     
     def draw(self):
-        self.box.draw()
+        #self.box.draw()
         
         # Internal drawing rectangle of the box 
         #
@@ -172,7 +172,6 @@ class Button(object):
         #so we can pass in a pos and 2d vector and tell if we've clicked on something
         def _close_widget(self):
                 self.state == Button.CLICKED
-                self.kill()
         
         def _point_is_inside(self, point):
                 img_point = point - vec2d(  
@@ -184,32 +183,3 @@ class Button(object):
                         return pix[3] > 0
                 except IndexError:
                         return False
-                        
-##################################################################
-##################################################################
-
-if __name__ == "__main__":
-    pygame.init()
-    
-    SCREEN_WIDTH, SCREEN_HEIGHT = 350, 550
-    screen = pygame.display.set_mode(
-                (SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-    clock = pygame.time.Clock()
-
-    box = Box(screen, Rect(20, 20, 40, 40), Color('brown4'), 0, Color('red'))
-    mb = MessageBoard(screen, Rect(80, 100, 200, 55), ["Bozo", "Jor"], 
-            border_width=2, border_color=Color('yellow'), font=('verdana', 16))
-
-    while True:
-        time_passed = clock.tick(30)
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        
-        box.draw()
-        mb.draw()
-        
-        pygame.display.flip()
-    #~ pygame.font.SysFont
-

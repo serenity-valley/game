@@ -93,7 +93,7 @@ class Game(object):
             field exluding its border.
         """
         return self.field_box.get_internal_rect()
-    
+
     def draw_background(self):
         img_rect = self.tile_img.get_rect()
         nrows = int(self.screen.get_height() / img_rect.height) + 1
