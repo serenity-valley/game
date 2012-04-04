@@ -106,10 +106,19 @@ class MessageBoard(object):
         
     
     def draw(self):
-        #self.box.draw()
+        #Draw the surrounding box
+        self.box.draw()
         
         # Internal drawing rectangle of the box 
         #
+        #
+        # Write a util method that takes in a width and height of space required for text and padding
+        # width, height = self.font.size(text)
+        # Calculate required space for text+padding+border
+        # utils.get_messagebox_coords(width, height, padding)
+        # returns x, y, height, width?
+        
+        
         text_rect = Rect(
             self.rect.left + self.border_width,
             self.rect.top + self.border_width,
@@ -127,9 +136,6 @@ class MessageBoard(object):
 	    #test if we can fit text into the MessageBoard
             if ( line_sf.get_width() + x_pos + self.padding > self.rect.right or line_sf.get_height() + y_pos + self.padding > self.rect.bottom):
 		raise LayoutError('Cannot fit line "%s" in widget' % line)
-		
-		#if ( self.padding > padding_boundary_right or self.padding > padding_boundary_bottom):
-		#	raise LayoutError('Padding will push text out of box, line was: "%s"' % line)
             
             self.surface.blit(line_sf, (x_pos+self.padding, y_pos+self.padding))
             y_pos += line_sf.get_height()
@@ -160,9 +166,8 @@ class Button(object):
                 
         def mouse_click_event(self, pos):
                 if self._point_is_inside(vec2d(pos)):
-                        self.state = Button.CLICKING
-                        Game.close_widget(self.attached)
                         self.state = Button.CLICKED
+
         
         def is_visible(self):
                 return self.state == Button.UNCLICKED or self.state == Button.CLICKING

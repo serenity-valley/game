@@ -13,7 +13,7 @@ from widgets import Box, MessageBoard, Button
 
 class Game(object):
     # Game parameters
-    BG_TILE_IMG = 'images/wood.png'
+    BG_TILE_IMG = 'images/wood2.png'
     BUTTON_BGIMG = 'images/x.png'
     SCREEN_WIDTH, SCREEN_HEIGHT = 580, 500
     GRID_SIZE = 20
@@ -55,24 +55,35 @@ class Game(object):
         self.button_width = self.button_bgimg.get_width()
         self.button_height = self.button_bgimg.get_height()
         
+        
         #hopefully this will draw the button -15 pixels from the right end, +15 from the top 
         #(hopefully giving us a nice X)
+        # should be replaced in the future with a method that returns the coords for an x button
+        # in whatever corner we want.
         self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
         self.button = Button(self.screen,
                                 rect=self.button_rect,
                                 btntype='Close',
                                 bgimg=self.button_bgimg,
-                                attached=self.tboard)
-        
+                                attached=self.tboard)        
         
         self.clock = pygame.time.Clock()
         self.paused = False
 
 	#spawning entities
 
-        self.options = dict(
-            draw_grid=False)
-    
+        
+        #Setting up gamefield
+        #need a method for dynamically figuring out how many rows/columns we need based on
+        #the spacing we want and field size. Using some constants for now.
+        self.grid_nrows = 30
+        self.grid_ncols = 30
+        
+        self.field_rect = Rect(0, 0, self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
+        
+        self.options = dict(debug=True, 
+                draw_grid=False)
+         
     def xy2coord(self, pos):
         """ Convert a (x, y) pair to a (nrow, ncol) coordinate
         """
@@ -167,10 +178,9 @@ class Game(object):
                     if event.key == pygame.K_SPACE:
                         self.paused = not self.paused
                     elif event.key == pygame.K_g:
-			pass
-			#toggle draw pathing grid
+                        #toggle draw grid
                         #if pygame.key.get_mods() & pygame.KMOD_CTRL:
-                        #    self.options['draw_grid'] = not self.options['draw_grid']
+                        self.options['draw_grid'] = not self.options['draw_grid']
                 elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
                         self.button.mouse_click_event(event.pos)
 			pass
