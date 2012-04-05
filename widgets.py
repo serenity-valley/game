@@ -113,7 +113,7 @@ class MessageBoard(object):
         # Internal drawing rectangle of the box 
         #
         #
-        # Write a util method that takes in a width and height of space required for text and padding
+        # Need a util method that takes in a width and height of space required for text and padding
         # width, height = self.font.size(text)
         # Calculate required space for text+padding+border
         # utils.get_messagebox_coords(width, height, padding)
