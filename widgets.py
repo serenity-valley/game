@@ -76,7 +76,7 @@ class MessageBoard(object):
             surface,
             rect,
             text,
-	    padding,
+            padding,
             font=('arial', 20),
             font_color=Color('white'),
             bgcolor=Color('gray25'),
@@ -95,7 +95,7 @@ class MessageBoard(object):
         self.surface = surface
         self.rect = rect
         self.text = text
-	self.padding = padding
+        self.padding = padding
         self.bgcolor = bgcolor
         self.font = pygame.font.SysFont(*font)
         self.font_color = font_color
@@ -111,7 +111,7 @@ class MessageBoard(object):
         # Internal drawing rectangle of the box 
         #
         #
-        # Need a util method that takes in a width and height of space required for text and padding
+        # Need a method that takes in a width and height of space required for text and padding
         # width, height = self.font.size(text)
         # Calculate required space for text+padding+border
         # utils.get_messagebox_coords(width, height, padding)
@@ -126,15 +126,16 @@ class MessageBoard(object):
             
         x_pos = text_rect.left
         y_pos = text_rect.top 
-		
+        
         # Render all the lines of text one below the other
         #
         for line in self.text:
             line_sf = self.font.render(line, True, self.font_color, self.bgcolor)
             
-	    #test if we can fit text into the MessageBoard + padding
+            #test if we can fit text into the MessageBoard + padding
+            
             if ( line_sf.get_width() + x_pos + self.padding > self.rect.right or line_sf.get_height() + y_pos + self.padding > self.rect.bottom):
-		raise LayoutError('Cannot fit line "%s" in widget' % line)
+                raise LayoutError('Cannot fit line "%s" in widget' % line)
             
             self.surface.blit(line_sf, (x_pos+self.padding, y_pos+self.padding))
             y_pos += line_sf.get_height()
@@ -151,7 +152,7 @@ class Button(object):
         def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", padding=0, attached=""):
                 print "In button init method"
                 self.surface = surface
-		self.pos = pos
+                self.pos = pos
                 self.btntype = btntype
                 self.imgnames = imgnames
                 self.text = text
@@ -159,7 +160,7 @@ class Button(object):
                 self.attached = attached
                 
                 #load images
-		self.imgs = []
+                self.imgs = []
                 for name in self.imgnames:
                         img = pygame.image.load(name).convert_alpha()
                         self.imgs.append(img)
@@ -184,11 +185,8 @@ class Button(object):
                 if self.btntype == "Close":
                         self.surface.blit(self.imgs[0], self.rect)
                 elif self.btntype == "Toggle":
-                        self.surface.blit(self.imgs[toggle], self.rect)
-                        #flip x back to UNCLICKED
-                        Game.buttons[0].state = UNCLICKED
-                        self.toggle = not toggle
-                
+                        self.surface.blit(self.imgs[self.toggle], self.rect)
+ 
         def mouse_click_event(self, pos):
                 if self.btntype == "Close":
                         if self._point_is_inside(vec2d(pos)):
@@ -196,6 +194,7 @@ class Button(object):
                 elif self.btntype == "Toggle":
                         if self._point_is_inside(vec2d(pos)):
                                 self.state = Button.CLICKED
+                                self.toggle = not self.toggle
         
         def is_visible(self):
                 if self.btntype == "Close":
