@@ -13,9 +13,10 @@ import pygame
 from pygame import Rect, Color
 from vec2d import vec2d
 
+#from game import Game
+
 class WidgetError(Exception): pass
 class LayoutError(WidgetError): pass
-
 
 class Box(object):
     """ A rectangular box. Has a background color, and can have
@@ -146,41 +147,80 @@ class Button(object):
                 has some methods to handle click events.
         """
         
-        (UNCLICKED, CLICKING, CLICKED) = range(3)
+        # needs to be replaced.
+        (UNCLICKED, CLICKED) = range(2)
         
-        def __init__(self, surface, rect, btntype, bgimg, attached):
+        def __init__(self, surface, btntype, imgnames=[], text="", padding=0, attached=""):
+                print "In button init method"
                 self.surface = surface
-                self.rect = rect
-                self.btntype = type
-                self.bgimg = bgimg
-                
-                self.width, self.height = self.bgimg.get_size()
-                
-                self.state = Button.UNCLICKED
-                
+                self.rect = ""
+                self.btntype = btntype
+                self.imgnames = imgnames
+                self.imgs = []
+                self.text = text
+                self.padding = padding
                 self.attached = attached
                 
+                self.pos = vec2d(0,0)
+                
+                #load images
+                for name in self.imgnames:
+                        img = pygame.image.load(name).convert_alpha()
+                        self.imgs.append(img)
+                        
+                #getting position, width and heigth for rect
+                #for now we will assume images for all button states are the same size
+                #and base calculations off of the first image provided
+                #eventually change this to "attached" argument so we can attach it to another widget dynamically
+                if self.btntype == "Close":
+                        print "Seting button to: " + str(self.attached.surface.get_width()) + ", " + str(self.attached.surface.get_height()-15)
+                        self.pos = vec2d(self.attached.surface.get_width(), self.attached.surface.get_height()-15)
+                        print "Setting button position to: " + str(self.pos.x) + ", " + str(self.pos.y)
+                elif self.btntype == "Toggle":
+                        self.pos = vec2d(Game.SCREEN_WIDTH-120, Game.SCREEN_HEIGHT-120)
+                        print "Setting button position to: " + str(self.pos.x) + ", " + str(self.pos.y)
+                
+                self.width, self.height = self.imgs[0].get_size()
+                
+                print "Image width is: " + str(self.width) + ", " + str(self.height)
+                
+                self.rect = Rect(self.pos.x, self.pos.y, self.width, self.height)               
+                
+                #set button state to unclicked, untoggled
+                self.state = Button.UNCLICKED
+                self.toggle = 0 
+                
         def draw(self):
-                if self.is_visible():
-                        self.surface.blit(self.bgimg, self.rect)
+                #eventually if we're going to draw arbitrary text on a button, we'll need a better method here.
+                # this will do for now.
+                if self.btntype == "Close":
+                        self.surface.blit(self.imgs[0], self.rect)
+                elif self.btntype == "Toggle":
+                        self.surface.blit(self.imgs[toggle], self.rect)
+                        #flip x button back to UNCLICKED
+                        Game.buttons[0].state = UNCLICKED
+                        self.toggle = not toggle
                 
         def mouse_click_event(self, pos):
-                if self._point_is_inside(vec2d(pos)):
-                        self.state = Button.CLICKED
-
+                if self.btntype == "Close":
+                        if self._point_is_inside(vec2d(pos)):
+                                self.state = Button.CLICKED
+                elif self.btntype == "Toggle":
+                        if self._point_is_inside(vec2d(pos)):
+                                self.state = Button.CLICKED
         
         def is_visible(self):
-                return self.state == Button.UNCLICKED or self.state == Button.CLICKING
+                if self.btntype == "Close":
+                        return self.state == Button.UNCLICKED
+                elif self.btntype == "Toggle":
+                        return True
         
         #This will eventually be replaced with a more generic funciton
         #so we can pass in a pos and 2d vector and tell if we've clicked on something
-        def _close_widget(self):
-                self.state == Button.CLICKED
-        
         def _point_is_inside(self, point):
-                img_point = point - vec2d(  
-                        int(self.width / 2),
-                        int(self.height / 2))
+                img_point = point - vec2d(
+                        int(self.pos.x - self.width / 4),
+                        int(self.pos.y - self.height / 4))
                 try:
                         pix = self.bgimg.get_at(img_point)
                         return pix[3] > 0

@@ -12,6 +12,7 @@ from vec2d import vec2d
 from widgets import Box, MessageBoard, Button
 
 class Game(object):
+    print "Setting global Game params."
     # Game parameters
     BG_TILE_IMG = 'images/wood2.png'
     BUTTON_BGIMG = 'images/x.png'
@@ -21,10 +22,12 @@ class Game(object):
     
     #will implement resource loading here
     
-    #Arbitrary game constants. Will make cheating easy.
-
+    #global game constants make cheating easy!
+        
     def __init__(self):
+        print "Starting to create game object."
         pygame.init()
+        print "Pygame started."
         
         #set up screen and background
         self.screen = pygame.display.set_mode(
@@ -33,7 +36,8 @@ class Game(object):
         self.tile_img_rect = self.tile_img.get_rect()
 	
 	#Drawing a handy MessageBoard widget
-	#Can use these for any text
+	#Can use these for any text.
+        print "Configuring tboard MessageBoard params."
         self.tboard_text = ['This is a test.']
         self.tboard_x = 20
         self.tboard_y = 20
@@ -51,28 +55,44 @@ class Game(object):
             font=('comic sans', 18),
             font_color=Color('yellow'))
     
-        self.button_bgimg = pygame.image.load(self.BUTTON_BGIMG).convert_alpha()
-        self.button_width = self.button_bgimg.get_width()
-        self.button_height = self.button_bgimg.get_height()
-        
+        print "Moving on to buttons..."        
+    
+        self.button_bgimgs = ['images/x.png']
+        #self.button_width = self.button_bgimgs[0].get_width()
+        #self.button_height = self.button_bgimgs[0].get_height()
         
         #hopefully this will draw the button -15 pixels from the right end, +15 from the top 
         #(hopefully giving us a nice X)
         # should be replaced in the future with a method that returns the coords for an x button
         # in whatever corner we want.
-        self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
+        #self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
         self.button = Button(self.screen,
-                                rect=self.button_rect,
                                 btntype='Close',
-                                bgimg=self.button_bgimg,
-                                attached=self.tboard)        
+                                imgnames=self.button_bgimgs,
+                                attached=self.tboard)
+        
+        print "Created close button."
+        
+        #setting up our toggle button
+        self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
+        #self.togglebtn_width = self.togglebtn_bgimgs[0].get_width()
+        #self.togglebtn_height = self.togglebtn_bgimgs[0].get_height()
+        
+        #self.togglebtn_rect = Rect(self.SCREEN_WIDTH-120, self.SCREEN_HEIGHT-120, self.togglebtn_width, self.togglebtn_height)
+        self.togglebtn = Button(self.screen,
+                                btntype='Toggle',
+                                imgnames=self.togglebtn_bgimgs,
+                                attached="")
+        
+        print "Created toggle button."
+        
+        self.buttons = [self.button, self.togglebtn]                                
         
         self.clock = pygame.time.Clock()
         self.paused = False
 
 	#spawning entities
 
-        
         #Setting up gamefield
         #need a method for dynamically figuring out how many rows/columns we need based on
         #the spacing we want and field size. Using some constants for now.
@@ -84,6 +104,8 @@ class Game(object):
         self.options = dict(debug=True, 
                 draw_grid=False)
          
+        print "Done setting game options, exiting Game init."
+        
     def xy2coord(self, pos):
         """ Convert a (x, y) pair to a (nrow, ncol) coordinate
         """
@@ -144,7 +166,9 @@ class Game(object):
         #Only stuff being drawn right now.
         #Message board with x button
         self.tboard.draw()
-	self.button.draw()
+        
+        if self.button.is_visible():
+                self.button.draw()
         
 	#this way we can draw dynamic MessageBoards.
         #self.mboard.text = self.mboard_text <-- copy in latest text
@@ -170,7 +194,8 @@ class Game(object):
             if time_passed > 100:
                 continue
             
-	    #Event loop. In-game control is pretty much routed through here
+	    #Event loop. In-game control is routed through here
+            #Will probably need something more robust soon.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit()
@@ -179,7 +204,6 @@ class Game(object):
                         self.paused = not self.paused
                     elif event.key == pygame.K_g:
                         #toggle draw grid
-                        #if pygame.key.get_mods() & pygame.KMOD_CTRL:
                         self.options['draw_grid'] = not self.options['draw_grid']
                 elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
                         self.button.mouse_click_event(event.pos)
@@ -196,7 +220,7 @@ class Game(object):
 		#update entities with time passed for internal calculations
 
                 self.draw()
-            #actually flip Surface buffers
+            #actually flip Surface buffer
             pygame.display.flip()
 
     def quit(self):
