@@ -67,6 +67,7 @@ class Game(object):
         # in whatever corner we want.
         #self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
         self.button = Button(self.screen,
+				pos=vec2d(self.tboard_rect.right, self.tboard_rect.top),
                                 btntype='Close',
                                 imgnames=self.button_bgimgs,
                                 attached=self.tboard)
@@ -80,6 +81,7 @@ class Game(object):
         
         #self.togglebtn_rect = Rect(self.SCREEN_WIDTH-120, self.SCREEN_HEIGHT-120, self.togglebtn_width, self.togglebtn_height)
         self.togglebtn = Button(self.screen,
+				pos=vec2d(250, 250),
                                 btntype='Toggle',
                                 imgnames=self.togglebtn_bgimgs,
                                 attached="")
