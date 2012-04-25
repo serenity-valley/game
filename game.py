@@ -25,7 +25,6 @@ class Game(object):
     #global game constants make cheating easy!
         
     def __init__(self):
-        print "Starting to create game object."
         pygame.init()
         print "Pygame started."
         
@@ -39,8 +38,8 @@ class Game(object):
         #Can use these for any text.
         print "Configuring tboard MessageBoard params."
         self.tboard_text = ['This is a test.']
-        self.tboard_x = 20
-        self.tboard_y = 20
+        self.tboard_x = 120
+        self.tboard_y = 120
         self.tboard_width = 125
         self.tboard_height = 30
         self.tboard_rect = Rect(self.tboard_x, self.tboard_y, self.tboard_width, self.tboard_height)
@@ -51,7 +50,7 @@ class Game(object):
             border_width=4,
             border_color=Color('black'),
             text=self.tboard_text,
-	    padding=5,
+            padding=5,
             font=('comic sans', 18),
             font_color=Color('yellow'))
     
@@ -67,7 +66,7 @@ class Game(object):
         # in whatever corner we want.
         #self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
         self.button = Button(self.screen,
-                                pos=vec2d(self.tboard_rect.right, self.tboard_rect.top),
+                                pos=vec2d(self.tboard_width, self.tboard_y-15),
                                 btntype='Close',
                                 imgnames=self.button_bgimgs,
                                 attached=self.tboard)
@@ -155,7 +154,7 @@ class Game(object):
     def draw(self):
         #draw background image
         self.draw_background()
-	
+        
         #draw game field crap here
         
         #decide if we should draw grid.
@@ -232,5 +231,7 @@ class Game(object):
 
 
 if __name__ == "__main__":
+    print "Creating game object..."
     game = Game()
+    print "Done. Starting run method"
     game.run()

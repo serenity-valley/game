@@ -13,6 +13,8 @@ import pygame
 from pygame import Rect, Color
 from vec2d import vec2d
 
+import game
+
 class WidgetError(Exception): pass
 class LayoutError(WidgetError): pass
 
@@ -103,7 +105,6 @@ class MessageBoard(object):
         
         self.box = Box(surface, rect, bgcolor, border_width, border_color)
         
-    
     def draw(self):
         #Draw the surrounding box
         self.box.draw()
@@ -117,7 +118,7 @@ class MessageBoard(object):
         # utils.get_messagebox_coords(width, height, padding)
         # returns x, y, height, width?
         
-        
+        # Internal rectangle where the text is actually drawn
         text_rect = Rect(
             self.rect.left + self.border_width,
             self.rect.top + self.border_width,
@@ -193,8 +194,9 @@ class Button(object):
                                 self.state = Button.CLICKED
                 elif self.btntype == "Toggle":
                         if self._point_is_inside(vec2d(pos)):
-                                self.state = Button.CLICKED
+                                self.state = not self.state
                                 self.toggle = not self.toggle
+                                game.buttons[0].state = not Game.buttons[0].state
         
         def is_visible(self):
                 if self.btntype == "Close":
