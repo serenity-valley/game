@@ -196,7 +196,10 @@ class Button(object):
                         if self._point_is_inside(vec2d(pos)):
                                 self.state = not self.state
                                 self.toggle = not self.toggle
-                                game.buttons[0].state = not Game.buttons[0].state
+                                #game.buttons[0].state = not Game.buttons[0].state
+				#above line not necessary self.state already does what this 
+				#was attempting to do because self = button, and 
+				#game.Game.buttons[0].state or whatever also = button
         
         def is_visible(self):
                 if self.btntype == "Close":

@@ -3,13 +3,16 @@ from random import randint, choice
 from math import sin, cos, radians
 
 import pygame
-from pygame import Rect, Color
-from pygame.sprite import Sprite
-
+#from pygame import Rect, Color
+#from pygame.sprite import Sprite
+#you already imported pygame, why import modules twice? Your code will run faster if 
+#you change Rect to pygame.Rect like I did. If this is a style preference, let me know.
 from simpleanimation import SimpleAnimation
 from utils import Timer
 from vec2d import vec2d
-from widgets import Box, MessageBoard, Button
+import widgets
+#You were importing all widgets anyway, and there was an unknown error. This is an easier
+#and a more efficient way to do this.
 
 class Game(object):
     print "Setting global Game params."
@@ -42,17 +45,17 @@ class Game(object):
         self.tboard_y = 120
         self.tboard_width = 125
         self.tboard_height = 30
-        self.tboard_rect = Rect(self.tboard_x, self.tboard_y, self.tboard_width, self.tboard_height)
-        self.tboard_bgcolor = Color(50, 20, 0)
-        self.tboard = MessageBoard(self.screen,
+        self.tboard_rect = pygame.Rect(self.tboard_x, self.tboard_y, self.tboard_width, self.tboard_height)
+        self.tboard_bgcolor = pygame.Color(50, 20, 0)
+        self.tboard = widgets.MessageBoard(self.screen,
             rect=self.tboard_rect,
             bgcolor=self.tboard_bgcolor,
-            border_width=4,
-            border_color=Color('black'),
+	            border_width=4,
+            border_color=pygame.Color('black'),
             text=self.tboard_text,
             padding=5,
             font=('comic sans', 18),
-            font_color=Color('yellow'))
+            font_color=pygame.Color('yellow'))
     
         print "Moving on to buttons..."        
     
@@ -65,7 +68,7 @@ class Game(object):
         # should be replaced in the future with a method that returns the coords for an x button
         # in whatever corner we want.
         #self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
-        self.button = Button(self.screen,
+        self.button = widgets.Button(self.screen,
                                 pos=vec2d(self.tboard_width, self.tboard_y-15),
                                 btntype='Close',
                                 imgnames=self.button_bgimgs,
@@ -76,7 +79,7 @@ class Game(object):
         #setting up our toggle button
         self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
-        self.togglebtn = Button(self.screen,
+        self.togglebtn = widgets.Button(self.screen,
                                 pos=vec2d(250, 250),
                                 btntype='Toggle',
                                 imgnames=self.togglebtn_bgimgs,
@@ -97,7 +100,7 @@ class Game(object):
         self.grid_nrows = 30
         self.grid_ncols = 30
         
-        self.field_rect = Rect(0, 0, self.SCREEN_WIDTH, self.SCREEN_HEIGHT)       
+        self.field_rect = pygame.Rect(0, 0, self.SCREEN_WIDTH, self.SCREEN_HEIGHT)       
         
         self.options = dict(debug=True, 
                 draw_grid=False)
@@ -140,14 +143,14 @@ class Game(object):
         for y in range(self.grid_nrows + 1):
             pygame.draw.line(
                 self.screen,
-                Color(50, 50, 50),
+                pygame.Color(50, 50, 50),
                 (self.field_rect.left, self.field_rect.top + y * self.GRID_SIZE - 1),
                 (self.field_rect.right - 1, self.field_rect.top + y * self.GRID_SIZE - 1))
         
         for x in range(self.grid_ncols + 1):
             pygame.draw.line(
                 self.screen,
-                Color(50, 50, 50),
+                pygame.Color(50, 50, 50),
                 (self.field_rect.left + x * self.GRID_SIZE - 1, self.field_rect.top),
                 (self.field_rect.left + x * self.GRID_SIZE - 1, self.field_rect.bottom - 1))
     
@@ -210,8 +213,10 @@ class Game(object):
                 elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
                         for button in self.buttons:
                             button.mouse_click_event(event.pos)
-            pass
-            #entity events here.
+            
+	    #pass 	temporarily disabled, don't think it does anything
+            
+	    #entity events here.
 
             #update hud, counters, score, anything like that here
             if not self.paused:
