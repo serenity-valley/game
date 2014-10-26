@@ -21,6 +21,7 @@ class SimpleAnimation(object):
                 Duration of the animation (in ms). If -1, the 
                 animation will have indefinite duration.
         """
+	print "starting animation."
         self.screen = screen
         self.images = images
         self.pos = pos
@@ -63,28 +64,31 @@ class SimpleAnimation(object):
     def _advance_img(self):
         self.img_ptr = (self.img_ptr + 1) % len(self.images)
 
+class start():
+	if __name__ == "__main__":
+	    print "initializing"
+	    pygame.init()
+	    screen = pygame.display.set_mode((300, 300), 0, 32)
 
-if __name__ == "__main__":
-    pygame.init()
-    screen = pygame.display.set_mode((300, 300), 0, 32)
+	    clock = pygame.time.Clock()
+	    explosion_img = pygame.image.load('images/explosion1.png').convert_alpha()
+	    images = [explosion_img, pygame.transform.rotate(explosion_img, 90)]
 
-    clock = pygame.time.Clock()
-    explosion_img = pygame.image.load('images/explosion1.png').convert_alpha()
-    images = [explosion_img, pygame.transform.rotate(explosion_img, 90)]
+	    expl = SimpleAnimation(screen, (100, 100), images, 100, 2120)
 
-    expl = SimpleAnimation(screen, (100, 100), images, 100, 2120)
+	    while True:
+		time_passed = clock.tick(50)
+		
+		screen.fill((0, 0, 0))
+		
+		for event in pygame.event.get():
+		    if event.type == pygame.QUIT:
+			sys.exit()
+		
+		expl.update(time_passed)
+		expl.draw()
+		
+		pygame.display.flip()
 
-    while True:
-        time_passed = clock.tick(50)
-        
-        screen.fill((0, 0, 0))
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-        
-        expl.update(time_passed)
-        expl.draw()
-        
-        pygame.display.flip()
+go = start()
 

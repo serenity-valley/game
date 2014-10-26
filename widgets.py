@@ -8,12 +8,13 @@
     instances, and all colors are pygame.Color instances.
 """
 import sys
-
+import time
 import pygame
 from pygame import Rect, Color
 from vec2d import vec2d
 
-import game
+from game import *
+import simpleanimation
 
 class WidgetError(Exception): pass
 class LayoutError(WidgetError): pass
@@ -164,6 +165,7 @@ class Button(object):
                 self.imgs = []
                 for name in self.imgnames:
                         img = pygame.image.load(name).convert_alpha()
+			#img = img.set_colorkey((255,255,255))
                         self.imgs.append(img)
                         
                 #getting position, width and heigth for rect
@@ -200,12 +202,19 @@ class Button(object):
 				#above line not necessary self.state already does what this 
 				#was attempting to do because self = button, and 
 				#game.Game.buttons[0].state or whatever also = button
+		elif self.btntype == "Action":
+			if self._point_is_inside(vec2d(pos)):
+				self.count = 100
+				expl = simpleanimation.start()
+				print "Action"
         
         def is_visible(self):
                 if self.btntype == "Close":
                         return self.state == Button.UNCLICKED
                 elif self.btntype == "Toggle":
                         return True
+		elif self.btntype == "Action":
+			return True
         
         #This will eventually be replaced with a more generic funciton
         #so we can pass in a pos and and rect and see if we clicked on it?
@@ -218,3 +227,36 @@ class Button(object):
                         return pix[3] > 0
                 except IndexError:
                         return False
+
+class Images(object):
+	""" allows for unclickable images """
+	def __init__(self, surface, image, pos=vec2d(0, 0),imgtype=""):
+		self.surface = surface
+		self.imgtype = imgtype
+		self.img = pygame.image.load(image).convert_alpha()
+		self.pos = pos
+		self.count = 0
+		self.imgwidth, self.imgheight = self.img.get_size()
+		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
+		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)  
+		
+	def draw(self):
+		#rotations didn't work well on diagonals. Could use a smoother method
+		if self.imgtype == "Spinner":
+			""" spinners make a full rotation every second """
+			x, y, ix, iy = self.rect
+			if self.count == 7:
+				self.img= pygame.transform.rotate(self.img, -90)
+				self.rect.y += self.imgheight
+			elif self.count == 15:
+				self.img= pygame.transform.rotate(self.img, -90)
+			elif self.count == 22:
+				self.img = pygame.transform.rotate(self.img, -90)
+				self.rect.x -= self.imgheight
+			elif self.count == 30:
+				self.img = pygame.transform.rotate(self.img, -90)
+				self.count = 0
+				self.rect.x += self.imgheight
+				self.rect.y -= self.imgheight
+			self.count += 1
+		self.surface.blit(self.img, self.rect)

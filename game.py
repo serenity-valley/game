@@ -7,12 +7,11 @@ import pygame
 #from pygame.sprite import Sprite
 #you already imported pygame, why import modules twice? Your code will run faster if 
 #you change Rect to pygame.Rect like I did. If this is a style preference, let me know.
-from simpleanimation import SimpleAnimation
+
 from utils import Timer
 from vec2d import vec2d
-import widgets
-#You were importing all widgets anyway, and there was an unknown error. This is an easier
-#and a more efficient way to do this.
+from widgets import *
+#You were importing all widgets anyway, and there was an unknown error. 
 
 class Game(object):
     print "Setting global Game params."
@@ -47,10 +46,10 @@ class Game(object):
         self.tboard_height = 30
         self.tboard_rect = pygame.Rect(self.tboard_x, self.tboard_y, self.tboard_width, self.tboard_height)
         self.tboard_bgcolor = pygame.Color(50, 20, 0)
-        self.tboard = widgets.MessageBoard(self.screen,
+        self.tboard = MessageBoard(self.screen,
             rect=self.tboard_rect,
             bgcolor=self.tboard_bgcolor,
-	            border_width=4,
+	    border_width=4,
             border_color=pygame.Color('black'),
             text=self.tboard_text,
             padding=5,
@@ -68,7 +67,7 @@ class Game(object):
         # should be replaced in the future with a method that returns the coords for an x button
         # in whatever corner we want.
         #self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
-        self.button = widgets.Button(self.screen,
+        self.button = Button(self.screen,
                                 pos=vec2d(self.tboard_width, self.tboard_y-15),
                                 btntype='Close',
                                 imgnames=self.button_bgimgs,
@@ -79,15 +78,25 @@ class Game(object):
         #setting up our toggle button
         self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
-        self.togglebtn = widgets.Button(self.screen,
+        self.togglebtn = Button(self.screen,
                                 pos=vec2d(250, 250),
                                 btntype='Toggle',
                                 imgnames=self.togglebtn_bgimgs,
                                 attached="")
         
         print "Created toggle button."
-        
-        self.buttons = [self.button, self.togglebtn]                                
+	
+	self.clockImg = Images(self.screen,
+				'images/clock.png',
+				pos=vec2d(430,0))
+	
+	self.hand = Images(self.screen,
+				'images/secondHand.png',
+				pos=vec2d(505,15),
+				imgtype='Spinner')
+       
+        self.buttons = [self.button, self.togglebtn]
+	self.images = [self.clockImg, self.hand]
         
         self.clock = pygame.time.Clock()
         self.paused = False
@@ -168,12 +177,13 @@ class Game(object):
         #Message board with x button
         self.tboard.draw()
         
-        if self.button.is_visible():
-                self.button.draw()
-                
-        if self.togglebtn.is_visible():
-                self.togglebtn.draw()
+	for button in self.buttons:
+		if button.is_visible():
+			button.draw()
         
+	for image in self.images:
+		image.draw()
+	
         #this way we can draw dynamic MessageBoards.
         #self.mboard.text = self.mboard_text <-- copy in latest text
         #self.mboard.draw()
@@ -187,7 +197,7 @@ class Game(object):
         while True:
             # Limit frame speed to 30 FPS
             #
-            time_passed = self.clock.tick(30)
+            self.time_passed = self.clock.tick(30)
             #~ time_passed = self.clock.tick()
             #~ print time_passed
             
@@ -196,7 +206,7 @@ class Game(object):
             # reason, and we don't want it to "jump forward"
             # suddenly)
             #
-            if time_passed > 100:
+            if self.time_passed > 100:
                 continue
             
             #Event loop. In-game control is routed through here
