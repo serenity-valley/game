@@ -216,17 +216,10 @@ class Button(object):
 		elif self.btntype == "Action":
 			return True
         
-        #This will eventually be replaced with a more generic funciton
-        #so we can pass in a pos and and rect and see if we clicked on it?
-        def _point_is_inside(self, point):
-                img_point = point - vec2d(
-                        int(self.pos.x - self.imgwidth / 4),
-                        int(self.pos.y - self.imgheight / 4))
-                try:
-                        pix = self.imgs[0].get_at(img_point)
-                        return pix[3] > 0
-                except IndexError:
-                        return False
+	def _point_is_inside(self, mpos):
+		if mpos.x > self.rect.x and mpos.x < self.rect.x+self.imgwidth:
+			if mpos.y > self.rect.y and mpos.y < self.rect.y+self.imgheight:
+				return True
 
 class Images(object):
 	""" allows for unclickable images """
@@ -242,6 +235,7 @@ class Images(object):
 		
 	def draw(self):
 		#rotations didn't work well on diagonals. Could use a smoother method
+		#but it's really only to test image draw and pause easier 
 		if self.imgtype == "Spinner":
 			""" spinners make a full rotation every second """
 			x, y, ix, iy = self.rect
