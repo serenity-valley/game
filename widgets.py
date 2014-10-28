@@ -151,36 +151,40 @@ class Button(object):
         # needs to be replaced.
         (UNCLICKED, CLICKED) = range(2)
         
-        def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", padding=0, attached=""):
+        def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", textcolor=(0,0,0), 
+				textimg=0,padding=0, attached=""):
                 print "In button init method"
                 self.surface = surface
                 self.pos = pos
                 self.btntype = btntype
                 self.imgnames = imgnames
                 self.text = text
+		self.textcolor = textcolor
+		self.textimg = textimg
                 self.padding = padding
                 self.attached = attached
+		self.state = Button.UNCLICKED
+                self.toggle = 0 
                 
                 #load images
                 self.imgs = []
                 for name in self.imgnames:
                         img = pygame.image.load(name).convert_alpha()
 			#img = img.set_colorkey((255,255,255))
+			#it would be nice to make the images transparent,
+			#but it throws an error not worth fighting
                         self.imgs.append(img)
-                        
-                #getting position, width and heigth for rect
-                #for now we will assume images for all button states are the same size
-                #and base calculations off of the first image provided
                 
-                self.imgwidth, self.imgheight = self.imgs[0].get_size()
+                self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
+                self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
+		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
+		
+		#creates a text label to place in the middle of the button
+		font = pygame.font.SysFont("Times New Roman", 25)
+		self.textOverlay =  font.render(self.text,1,self.textcolor)
+		self.textSize = vec2d(font.size(self.text))
+		self.textRect = Rect(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
                 
-                print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
-                
-                self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)               
-                
-                #set button state to unclicked, untoggled
-                self.state = Button.UNCLICKED
-                self.toggle = 0 
                 
         def draw(self):
                 # eventually if we're going to draw arbitrary text on a button, we'll need a better method here.
@@ -189,6 +193,9 @@ class Button(object):
                         self.surface.blit(self.imgs[0], self.rect)
                 elif self.btntype == "Toggle":
                         self.surface.blit(self.imgs[self.toggle], self.rect)
+			if self.toggle == self.textimg:
+				self.surface.blit(self.textOverlay, self.textRect)
+			
  
         def mouse_click_event(self, pos):
                 if self.btntype == "Close":
@@ -198,10 +205,9 @@ class Button(object):
                         if self._point_is_inside(vec2d(pos)):
                                 self.state = not self.state
                                 self.toggle = not self.toggle
-                                #game.buttons[0].state = not Game.buttons[0].state
-				#above line not necessary self.state already does what this 
-				#was attempting to do because self = button, and 
-				#game.Game.buttons[0].state or whatever also = button
+				self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
+				self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
+				self.textRect = Rect(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
 		elif self.btntype == "Action":
 			if self._point_is_inside(vec2d(pos)):
 				self.count = 100
