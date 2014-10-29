@@ -75,9 +75,6 @@ class Game(object):
         
         print "Created close button."
         
-        #setting up our toggle button
-	#temporarily changed second image to test changing click boundries
-	#original: 'images/toggle2.png'
         self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
         self.togglebtn = Button(self.screen,

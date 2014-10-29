@@ -187,8 +187,6 @@ class Button(object):
                 
                 
         def draw(self):
-                # eventually if we're going to draw arbitrary text on a button, we'll need a better method here.
-                # this will do for now.
                 if self.btntype == "Close":
                         self.surface.blit(self.imgs[0], self.rect)
                 elif self.btntype == "Toggle":
