@@ -258,3 +258,52 @@ class Images(object):
 				self.rect.y -= self.imgheight
 			self.count += 1
 		self.surface.blit(self.img, self.rect)
+
+class textEntry(object):
+	""" allows for reading input from the user """        
+        def __init__(self, surface, pos=vec2d(0, 0), size = vec2d(200,50), text="", textcolor=(0,0,0),padding=0, bgcolor = (255,255,255)):
+                print "In textEntry init method"
+                self.surface = surface
+                self.pos = pos
+		self.size = size
+                self.text = text
+		self.textcolor = textcolor
+                self.padding = padding
+                self.clicked = False
+		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+		self.lastKey = ""
+		self.count = 1
+		
+		#creates a text label to place in the middle of the rectangle
+		self.font = pygame.font.SysFont("Times New Roman", 25)
+		self.textOverlay =  self.font.render(self.text,1,self.textcolor)
+		self.textSize = vec2d(self.font.size(self.text))
+		self.textRect = Rect(self.pos.x, self.pos.y, self.textSize.x, self.textSize.y)#self.pos.x+self.size.x-self.textSize.x/2,self.pos.y+self.size.y-self.textSize.y/2,0,0)
+                
+        def draw(self):
+		if self.clicked:
+			if pygame.key.get_focused():
+				pressed = pygame.key.get_pressed()
+				for i in range(len(pressed)):
+					if pressed[i] == 1:
+						key = pygame.key.name(i)
+						if key == "backspace":
+							self.text = self.text[:-1]
+						elif self.lastKey == key and self.count <= 1:
+							self.count += 1
+						elif len(key) == 1 and self.font.size(self.text)[0] <= self.size.x:
+							self.lastKey = key
+							self.count = 0
+							self.text += key
+						self.textOverlay = self.font.render(self.text,1,self.textcolor)
+
+		pygame.draw.rect(self.surface, (255,255,255), self.rect)
+		self.surface.blit(self.textOverlay, self.textRect)
+			
+        def mouse_click_event(self, pos):
+		self.clicked = not self.clicked
+        
+	def _point_is_inside(self, mpos):
+		if mpos.x > self.rect.x and mpos.x < self.rect.x+self.imgwidth:
+			if mpos.y > self.rect.y and mpos.y < self.rect.y+self.imgheight:
+				return True

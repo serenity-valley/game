@@ -74,7 +74,7 @@ class Game(object):
                                 attached=self.tboard)
         
         print "Created close button."
-        
+ 	
         self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
         self.togglebtn = Button(self.screen,
@@ -88,16 +88,22 @@ class Game(object):
         print "Created toggle button."
 	
 	self.clockImg = Images(self.screen,
-				'images/clock.png',
-				pos=vec2d(430,0))
-	
+					'images/clock.png',
+					pos=vec2d(430,0))
+				
 	self.hand = Images(self.screen,
-				'images/secondHand.png',
-				pos=vec2d(505,15),
-				imgtype='Spinner')
+						'images/secondHand.png',
+						pos=vec2d(505,15),
+						imgtype='Spinner')
+					
+	self.textTest = textEntry(self.screen, 
+						pos=vec2d(0, self.SCREEN_HEIGHT-50),
+						size=vec2d(self.SCREEN_WIDTH,50))
+								
        
         self.buttons = [self.button, self.togglebtn]
 	self.images = [self.clockImg, self.hand]
+	self.textEntries = [self.textTest]
         
         self.clock = pygame.time.Clock()
         self.paused = False
@@ -179,11 +185,14 @@ class Game(object):
         self.tboard.draw()
         
 	for button in self.buttons:
-		if button.is_visible():
-			button.draw()
+	    if button.is_visible():
+		button.draw()
         
 	for image in self.images:
-		image.draw()
+	    image.draw()
+		
+	for entry in self.textEntries:
+	    entry.draw()
 	
         #this way we can draw dynamic MessageBoards.
         #self.mboard.text = self.mboard_text <-- copy in latest text
@@ -212,18 +221,20 @@ class Game(object):
             
             #Event loop. In-game control is routed through here
             #Will probably need something more robust soon.
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.quit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        self.paused = not self.paused
-                    elif event.key == pygame.K_g:
-                        #toggle draw grid
-                        self.options['draw_grid'] = not self.options['draw_grid']
-                elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-                        for button in self.buttons:
-                            button.mouse_click_event(event.pos)
+	    for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+		    self.quit()
+		elif event.type == pygame.KEYDOWN:
+		    if event.key == pygame.K_SPACE:
+			self.paused = not self.paused
+		    elif event.key == pygame.K_g:
+			#toggle draw grid
+			self.options['draw_grid'] = not self.options['draw_grid']
+		elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
+		    for button in self.buttons:
+			button.mouse_click_event(event.pos)
+		    for entry in self.textEntries:
+			entry.mouse_click_event(event.pos)
             
 	    #pass 	temporarily disabled, don't think it does anything
             
