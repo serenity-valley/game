@@ -99,12 +99,22 @@ class Game(object):
 	self.textTest = textEntry(self.screen, 
 						pos=vec2d(0, self.SCREEN_HEIGHT-50),
 						size=vec2d(self.SCREEN_WIDTH,50))
+						
+	self.floater = movingRect(self.screen,
+						pos=vec2d(self.SCREEN_WIDTH/2, 0),
+						speed=vec2d(0,5))
+						
+	self.moveImg = movingImg(self.screen,
+						"images/toggle1.png",
+						pos=vec2d(0,self.SCREEN_HEIGHT*3/4),
+						speed=vec2d(5, 0))
 								
        
         self.buttons = [self.button, self.togglebtn]
 	self.images = [self.clockImg, self.hand]
 	self.textEntries = [self.textTest]
-        
+        self.moving = [self.moveImg, self.floater]
+	
         self.clock = pygame.time.Clock()
         self.paused = False
 
@@ -194,6 +204,8 @@ class Game(object):
 	for entry in self.textEntries:
 	    entry.draw()
 	
+	for mover in self.moving:
+	    mover.draw()
         #this way we can draw dynamic MessageBoards.
         #self.mboard.text = self.mboard_text <-- copy in latest text
         #self.mboard.draw()
@@ -218,13 +230,17 @@ class Game(object):
             #
             if self.time_passed > 100:
                 continue
-            
+           
+	    active = False 
+	    for entry in self.textEntries:
+		    if entry.clicked:
+			    active = True
             #Event loop. In-game control is routed through here
             #Will probably need something more robust soon.
 	    for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 		    self.quit()
-		elif event.type == pygame.KEYDOWN:
+		elif event.type == pygame.KEYDOWN and not active:
 		    if event.key == pygame.K_SPACE:
 			self.paused = not self.paused
 		    elif event.key == pygame.K_g:
