@@ -144,39 +144,39 @@ class MessageBoard(object):
 
 
 class Button(object):
-        """     Employs some crap from Box to draw a rectangular button, 
-                has some methods to handle click events.
-        """
+	"""     Employs some crap from Box to draw a rectangular button, 
+			has some methods to handle click events.
+	"""
         
-        # needs to be replaced.
-        (UNCLICKED, CLICKED) = range(2)
+	# needs to be replaced.
+	(UNCLICKED, CLICKED) = range(2)
         
-        def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", textcolor=(0,0,0), 
-				textimg=0,padding=0, attached=""):
-                print "In button init method"
-                self.surface = surface
-                self.pos = pos
-                self.btntype = btntype
-                self.imgnames = imgnames
-                self.text = text
+	def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", textcolor=(0,0,0), 
+		textimg=0,padding=0, attached=""):
+		print "In button init method"
+		self.surface = surface
+		self.pos = pos
+		self.btntype = btntype
+		self.imgnames = imgnames
+		self.text = text
 		self.textcolor = textcolor
 		self.textimg = textimg
-                self.padding = padding
-                self.attached = attached
+		self.padding = padding
+		self.attached = attached
 		self.state = Button.UNCLICKED
-                self.toggle = 0 
-                
-                #load images
-                self.imgs = []
-                for name in self.imgnames:
-                        img = pygame.image.load(name).convert_alpha()
+		self.toggle = 0 
+			
+		#load images
+		self.imgs = []
+		for name in self.imgnames:
+			img = pygame.image.load(name).convert_alpha()
 			#img = img.set_colorkey((255,255,255))
 			#it would be nice to make the images transparent,
 			#but it throws an error not worth fighting
-                        self.imgs.append(img)
+			self.imgs.append(img)
                 
-                self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
-                self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
+		self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
+		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
 		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
 		
 		#creates a text label to place in the middle of the button
@@ -186,23 +186,23 @@ class Button(object):
 		self.textRect = Rect(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
                 
                 
-        def draw(self):
-                if self.btntype == "Close":
-                        self.surface.blit(self.imgs[0], self.rect)
-                elif self.btntype == "Toggle":
-                        self.surface.blit(self.imgs[self.toggle], self.rect)
+	def draw(self):
+		if self.btntype == "Close":
+			self.surface.blit(self.imgs[0], self.rect)
+		elif self.btntype == "Toggle":
+			self.surface.blit(self.imgs[self.toggle], self.rect)
 			if self.toggle == self.textimg:
 				self.surface.blit(self.textOverlay, self.textRect)
 			
  
-        def mouse_click_event(self, pos):
-                if self.btntype == "Close":
-                        if self._point_is_inside(vec2d(pos)):
-                                self.state = Button.CLICKED
-                elif self.btntype == "Toggle":
-                        if self._point_is_inside(vec2d(pos)):
-                                self.state = not self.state
-                                self.toggle = not self.toggle
+	def mouse_click_event(self, pos):
+		if self.btntype == "Close":
+			if self._point_is_inside(vec2d(pos)):
+				self.state = Button.CLICKED
+		elif self.btntype == "Toggle":
+			if self._point_is_inside(vec2d(pos)):
+				self.state = not self.state
+				self.toggle = not self.toggle
 				self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
 				self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
 				self.textRect = Rect(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
@@ -211,14 +211,6 @@ class Button(object):
 				self.count = 100
 				expl = simpleanimation.start()
 				print "Action"
-        
-        def is_visible(self):
-                if self.btntype == "Close":
-                        return self.state == Button.UNCLICKED
-                elif self.btntype == "Toggle":
-                        return True
-		elif self.btntype == "Action":
-			return True
         
 	def _point_is_inside(self, mpos):
 		if mpos.x > self.rect.x and mpos.x < self.rect.x+self.imgwidth:
@@ -261,15 +253,15 @@ class Images(object):
 
 class textEntry(object):
 	""" allows for reading input from the user """        
-        def __init__(self, surface, pos=vec2d(0, 0), size = vec2d(200,50), text="", textcolor=(0,0,0),padding=0, bgcolor = (255,255,255)):
-                print "In textEntry init method"
-                self.surface = surface
-                self.pos = pos
+	def __init__(self, surface, pos=vec2d(0, 0), size = vec2d(200,50), text="", textcolor=(0,0,0),padding=0, bgcolor = (255,255,255)):
+		print "In textEntry init method"
+		self.surface = surface
+		self.pos = pos
 		self.size = size
-                self.text = text
+		self.text = text
 		self.textcolor = textcolor
-                self.padding = padding
-                self.clicked = False
+		self.padding = padding
+		self.clicked = False
 		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
 		self.lastKey = ""
 		self.delay = 1
@@ -280,7 +272,7 @@ class textEntry(object):
 		self.textSize = vec2d(self.font.size(self.text))
 		self.textRect = Rect(self.pos.x, self.pos.y, self.textSize.x, self.textSize.y)
                 
-        def draw(self):
+	def draw(self):
 		if self.clicked:
 			if pygame.key.get_focused():
 				pressed = pygame.key.get_pressed()
@@ -288,6 +280,7 @@ class textEntry(object):
 					if pressed[i] == 1:
 						key = pygame.key.name(i)
 						if self.lastKey == key and self.delay <= 1:
+							#can't seem to find a decent delay time please fix
 							self.delay += .4
 						elif len(key) == 1 and self.font.size(self.text)[0] <= self.size.x:
 							#could easily create a wrap using lists and proper indexing, will do later
@@ -312,7 +305,7 @@ class textEntry(object):
 		pygame.draw.rect(self.surface, (255,255,255), self.rect)
 		self.surface.blit(self.textOverlay, self.textRect)
 			
-        def mouse_click_event(self, pos):
+	def mouse_click_event(self, pos):
 		if self._point_is_inside(vec2d(pos)):
 			self.clicked = not self.clicked
         
@@ -363,3 +356,14 @@ class movingImg(object):
 		self.pos.y += self.speed.y
 		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
 		self.surface.blit(self.image, self.rect)
+		
+class circles(object):
+	def __init__(self, surface, pos=vec2d(10,10), radius=5, bgcolor=(0,0,0)):
+		""" creates a simple useless circle """
+		self.surface = surface
+		self.pos = pos
+		self.radius = radius
+		self.bgcolor = bgcolor
+		
+	def draw(self):
+		pygame.draw.circle(self.surface, self.bgcolor, self.pos, self.radius)
