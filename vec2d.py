@@ -7,7 +7,12 @@ class vec2d(object):
        and also provides a bunch of high level functions
        """
     __slots__ = ['x', 'y']
- 
+    
+    """Init
+        @param x_or_pair: either a tuple or a float can be taken as arg
+        @param y: boolean to determine whether to run float or tuple operation
+        initializes object
+    """
     def __init__(self, x_or_pair, y = None):
         if y == None:
             self.x = x_or_pair[0]
@@ -15,10 +20,17 @@ class vec2d(object):
         else:
             self.x = x_or_pair
             self.y = y
- 
+    
+    """len method
+        returns length of input
+    """
     def __len__(self):
         return 2
- 
+
+    """getitem
+        @param key: index for tuple value
+        returns value from tuple
+    """
     def __getitem__(self, key):
         if key == 0:
             return self.x
@@ -27,6 +39,11 @@ class vec2d(object):
         else:
             raise IndexError("Invalid subscript "+str(key)+" to vec2d")
  
+    """setitem
+        @param key: index of tuple to change
+        @param value: new value
+        changes value in tuple
+    """
     def __setitem__(self, key, value):
         if key == 0:
             self.x = value
@@ -36,26 +53,40 @@ class vec2d(object):
             raise IndexError("Invalid subscript "+str(key)+" to vec2d")
  
     # String representaion (for debugging)
+    """repr
+        returns both x and y as string
+    """
     def __repr__(self):
         return 'vec2d(%s, %s)' % (self.x, self.y)
     
     # Comparison
+    """eq
+        @param other: other instance of vec2d object
+        returns true if the objects have equal values
+    """
     def __eq__(self, other):
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x == other[0] and self.y == other[1]
         else:
             return False
     
+    """ne
+        @param other: other instance of vec2d object
+        returns true if the objects do not have equal values
+    """
     def __ne__(self, other):
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x != other[0] or self.y != other[1]
         else:
             return True
- 
+    """nonzero
+        returns true if either x or y is not 0
+    """
     def __nonzero__(self):
         return self.x or self.y
  
     # Generic operator handlers
+
     def _o2(self, other, f):
         "Any two-operator operation where the left operand is a vec2d"
         if isinstance(other, vec2d):
@@ -88,6 +119,10 @@ class vec2d(object):
         return self
  
     # Addition
+    """add
+        @param other: other instance of vec2d object
+        returns new vac2d as a result of the two added vec2d objects
+    """
     def __add__(self, other):
         if isinstance(other, vec2d):
             return vec2d(self.x + other.x, self.y + other.y)
@@ -97,6 +132,10 @@ class vec2d(object):
             return vec2d(self.x + other, self.y + other)
     __radd__ = __add__
     
+    """iadd
+        @param other: other instance of vec2d object
+        sets new x and y values from adding others x and y values
+    """
     def __iadd__(self, other):
         if isinstance(other, vec2d):
             self.x += other.x
@@ -110,6 +149,10 @@ class vec2d(object):
         return self
  
     # Subtraction
+    """sub
+        @param other: other instance of vec2d object
+        returns new vac2d as a result of the two subtracted vec2d objects
+    """
     def __sub__(self, other):
         if isinstance(other, vec2d):
             return vec2d(self.x - other.x, self.y - other.y)
@@ -117,6 +160,10 @@ class vec2d(object):
             return vec2d(self.x - other[0], self.y - other[1])
         else:
             return vec2d(self.x - other, self.y - other)
+    """rsub
+        @param other: other instance of vec2d object
+        sets new x and y values from subtracting others x and y values
+    """        
     def __rsub__(self, other):
         if isinstance(other, vec2d):
             return vec2d(other.x - self.x, other.y - self.y)
@@ -124,6 +171,11 @@ class vec2d(object):
             return vec2d(other[0] - self.x, other[1] - self.y)
         else:
             return vec2d(other - self.x, other - self.y)
+
+    """isub
+        @param other: other instance of vec2d object
+        sets new x and y values from subtracting others x and y values
+    """ 
     def __isub__(self, other):
         if isinstance(other, vec2d):
             self.x -= other.x
@@ -135,7 +187,10 @@ class vec2d(object):
             self.x -= other
             self.y -= other
         return self
- 
+    """mul
+        @param other: other instance of vec2d object
+        returns new vec2d object of multiplied values from self and other
+    """
     # Multiplication
     def __mul__(self, other):
         if isinstance(other, vec2d):
@@ -146,6 +201,10 @@ class vec2d(object):
             return vec2d(self.x*other, self.y*other)
     __rmul__ = __mul__
     
+    """imul
+        @param other: other instance of vec2d object
+        sets new x and y values from multiplying others x and y values
+    """ 
     def __imul__(self, other):
         if isinstance(other, vec2d):
             self.x *= other.x
@@ -236,7 +295,6 @@ class vec2d(object):
     # vectory functions
     def get_length_sqrd(self): 
         return self.x**2 + self.y**2
- 
     def get_length(self):
         return math.sqrt(self.x**2 + self.y**2)    
     def __setlength(self, value):
