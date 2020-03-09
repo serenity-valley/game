@@ -8,6 +8,8 @@ import pygame
 #you already imported pygame, why import modules twice? Your code will run faster if 
 #you change Rect to pygame.Rect like I did. If this is a style preference, let me know.
 
+#EU NÃO SEI NEM PRA ONDE ISSO VAI
+
 from utils import Timer
 from vec2d import vec2d
 from widgets import *
