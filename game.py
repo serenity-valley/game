@@ -14,7 +14,7 @@ from widgets import *
 #You were importing all widgets anyway, and there was an unknown error. 
 
 class Game(object):
-    print "Setting global Game params."
+    print ("Setting global Game params.")
     # Game parameters
     BG_TILE_IMG = 'images/wood2.png'
     BUTTON_BGIMG = 'images/x.png'
