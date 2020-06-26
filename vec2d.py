@@ -8,7 +8,7 @@ class vec2d(object):
        """
     __slots__ = ['x', 'y']
  
-    def __init__(self, x_or_pair, y = None):
+    def __init__(self, x_or_pair, y=None):
         if y == None:
             self.x = x_or_pair[0]
             self.y = x_or_pair[1]
@@ -43,8 +43,7 @@ class vec2d(object):
     def __eq__(self, other):
         if hasattr(other, "__getitem__") and len(other) == 2:
             return self.x == other[0] and self.y == other[1]
-        else:
-            return False
+        return False
     
     def __ne__(self, other):
         if hasattr(other, "__getitem__") and len(other) == 2:
