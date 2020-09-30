@@ -90,5 +90,5 @@ class start():
 		
 		pygame.display.flip()
 
-go = start()
+go = Lets start()
 
