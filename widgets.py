@@ -10,7 +10,7 @@
 import sys
 import time
 import pygame
-from pygame import Rect, Color
+from pygame import React, Color
 from vec2d import vec2d
 
 from game import *
@@ -23,12 +23,12 @@ class Box(object):
     """ A rectangular box. Has a background color, and can have
         a border of a different color.
         
-        Has a concept of the "internal rect". This is the rect
+        Has a concept of the "internal rect". This is the react
         inside the border (not including the border itself).
     """
     def __init__(self, 
             surface,
-            rect,
+            react,
             bgcolor,
             border_width=0,
             border_color=Color('black')):
@@ -46,13 +46,13 @@ class Box(object):
                 Color of the border.
         """
         self.surface = surface
-        self.rect = rect
+        self.rect = react
         self.bgcolor = bgcolor
         self.border_width = border_width
         self.border_color = border_color
         
         # Internal rectangle
-        self.in_rect = Rect(
+        self.in_rect = React(
             self.rect.left + self.border_width,
             self.rect.top + self.border_width,
             self.rect.width - self.border_width * 2,
@@ -77,7 +77,7 @@ class MessageBoard(object):
     """
     def __init__(self, 
             surface,
-            rect,
+            react,
             text,
             padding,
             font=('arial', 20),
@@ -120,14 +120,14 @@ class MessageBoard(object):
         # returns x, y, height, width?
         
         # Internal rectangle where the text is actually drawn
-        text_rect = Rect(
+        text_react = React(
             self.rect.left + self.border_width,
             self.rect.top + self.border_width,
             self.rect.width - self.border_width * 2,
             self.rect.height - self.border_width * 2)
             
-        x_pos = text_rect.left
-        y_pos = text_rect.top 
+        x_pos = text_react.left
+        y_pos = text_react.top 
         
         # Render all the lines of text one below the other
         #
@@ -176,14 +176,14 @@ class Button(object):
 			self.imgs.append(img)
                 
 		self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
-		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
+		self.rect = React(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
 		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
 		
 		#creates a text label to place in the middle of the button
 		font = pygame.font.SysFont("Times New Roman", 25)
 		self.textOverlay =  font.render(self.text,1,self.textcolor)
 		self.textSize = vec2d(font.size(self.text))
-		self.textRect = Rect(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
+		self.textRect = React(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
                 
                 
 	def draw(self):
@@ -204,8 +204,8 @@ class Button(object):
 				self.state = not self.state
 				self.toggle = not self.toggle
 				self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
-				self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
-				self.textRect = Rect(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
+				self.rect = React(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
+				self.textRect = React(self.pos.x+self.imgwidth/2-self.textSize.x/2,self.pos.y+self.imgheight/2-self.textSize.y/2,0,0)
 		elif self.btntype == "Action":
 			if self._point_is_inside(vec2d(pos)):
 				self.count = 100
@@ -227,7 +227,7 @@ class Images(object):
 		self.count = 0
 		self.imgwidth, self.imgheight = self.img.get_size()
 		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
-		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)  
+		self.rect = React(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)  
 		
 	def draw(self):
 		#rotations didn't work well on diagonals. Could use a smoother method
@@ -262,7 +262,7 @@ class textEntry(object):
 		self.textcolor = textcolor
 		self.padding = padding
 		self.clicked = False
-		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+		self.rect = React(self.pos.x, self.pos.y, self.size.x, self.size.y)
 		self.lastKey = ""
 		self.delay = 1
 		
@@ -270,7 +270,7 @@ class textEntry(object):
 		self.font = pygame.font.SysFont("Times New Roman", 25)
 		self.textOverlay =  self.font.render(self.text,1,self.textcolor)
 		self.textSize = vec2d(self.font.size(self.text))
-		self.textRect = Rect(self.pos.x, self.pos.y, self.textSize.x, self.textSize.y)
+		self.textRect = React(self.pos.x, self.pos.y, self.textSize.x, self.textSize.y)
                 
 	def draw(self):
 		if self.clicked:
@@ -323,7 +323,7 @@ class movingRect(object):
 		self.size = size
 		self.speed = speed
 		self.gravity = gravity
-		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+		self.rect = React(self.pos.x, self.pos.y, self.size.x, self.size.y)
 		self.color = color
 		
 	def draw(self):
@@ -333,7 +333,7 @@ class movingRect(object):
 			self.speed.y *= -1
 		self.pos.x += self.speed.x
 		self.pos.y += self.speed.y
-		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+		self.rect = React(self.pos.x, self.pos.y, self.size.x, self.size.y)
 		pygame.draw.rect(self.surface, self.color, self.rect)
 
 class movingImg(object):
@@ -345,7 +345,7 @@ class movingImg(object):
 		self.speed = speed
 		self.gravity = gravity
 		self.size = vec2d(self.image.get_size())
-		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+		self.rect = React(self.pos.x, self.pos.y, self.size.x, self.size.y)
 	
 	def draw(self):
 		if self.pos.x + self.size.x > self.surfaceSize.x or self.pos.x < 0:
@@ -354,7 +354,7 @@ class movingImg(object):
 			self.speed.y *= -1
 		self.pos.x += self.speed.x
 		self.pos.y += self.speed.y
-		self.rect = Rect(self.pos.x, self.pos.y, self.size.x, self.size.y)
+		self.rect = React(self.pos.x, self.pos.y, self.size.x, self.size.y)
 		self.surface.blit(self.image, self.rect)
 		
 class circles(object):
