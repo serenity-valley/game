@@ -10,7 +10,7 @@ class Timer(object):
         The callback calls will result synchronously during these
         calls to update()
     """
-    def __init__(self, interval, callback, oneshot=False):
+    def __init__(self, interval, callback, oneshot=False,time=0,alive=True):
         """ Create a new Timer.
         
             interval: The timer interval in milliseconds
