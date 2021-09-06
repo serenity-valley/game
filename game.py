@@ -3,15 +3,12 @@ from random import randint, choice
 from math import sin, cos, radians
 
 import pygame
-#from pygame import Rect, Color
-#from pygame.sprite import Sprite
-#you already imported pygame, why import modules twice? Your code will run faster if 
-#you change Rect to pygame.Rect like I did. If this is a style preference, let me know.
+
 
 from utils import Timer
 from vec2d import vec2d
 from widgets import *
-#You were importing all widgets anyway, and there was an unknown error. 
+
 
 class Game(object):
     print "Setting global Game params."
@@ -21,11 +18,7 @@ class Game(object):
     SCREEN_WIDTH, SCREEN_HEIGHT = 580, 500
     GRID_SIZE = 20
     FIELD_SIZE = 400, 400
-    
-    #need to implement resource loading here
-    
-    #global game constants make cheating easy!
-        
+
     def __init__(self):
         pygame.init()
         print "Pygame started."
@@ -36,8 +29,7 @@ class Game(object):
         self.tile_img = pygame.image.load(self.BG_TILE_IMG).convert_alpha()
         self.tile_img_rect = self.tile_img.get_rect()
         
-           #Drawing a handy MessageBoard widget
-        #Can use these for any text.
+
         print "Configuring tboard MessageBoard params."
         self.tboard_text = ['This is a test.']
         self.tboard_x = 120
@@ -59,14 +51,6 @@ class Game(object):
 	print "Moving on to buttons..."        
     
 	self.button_bgimgs = ['images/x.png']
-	#self.button_width = self.button_bgimgs[0].get_width()
-	#self.button_height = self.button_bgimgs[0].get_height()
-        
-	#hopefully this will draw the button -15 pixels from the right end, +15 from the top 
-	#(hopefully giving us a nice X)
-	# should be replaced in the future with a method that returns the coords for an x button
-	# in whatever corner we want.
-	#self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
 	self.button = Button(self.screen,
                                 pos=vec2d(self.tboard_width, self.tboard_y-15),
                                 btntype='Close',
@@ -121,11 +105,7 @@ class Game(object):
 	self.clock = pygame.time.Clock()
 	self.paused = False
 
-	#spawning entities
 
-	#Setting up gamefield
-	#need a method for dynamically figuring out how many rows/columns we need based on
-	#the spacing we want and field size. Using some constants for now.
 	self.grid_nrows = 30
 	self.grid_ncols = 30
         
@@ -134,7 +114,7 @@ class Game(object):
 	self.options = dict(debug=True, 
                 draw_grid=False)
          
-	print "Done setting game options, exiting Game init."
+	print "Game Options Updated"
         
     def xy2coord(self, pos):
         """ Convert a (x, y) pair to a (nrow, ncol) coordinate
@@ -198,20 +178,11 @@ class Game(object):
         
     def run(self):
         print "Beginning run sequence."
-        # The main game loop
-        #
+
         while True:
-            # Limit frame speed to 30 FPS
-            #
+
             self.time_passed = self.clock.tick(30)
-            #~ time_passed = self.clock.tick()
-            #~ print time_passed
-            
-            # If too long has passed between two frames, don't
-            # update (the game must have been suspended for some
-            # reason, and we don't want it to "jump forward"
-            # suddenly)
-            #
+
             if self.time_passed > 100:
                 continue
            
@@ -219,8 +190,8 @@ class Game(object):
 	    for entry in self.textEntries:
 		    if entry.clicked:
 			    active = True
-            #Event loop. In-game control is routed through here
-            #Will probably need something more robust soon.
+
+
 	    for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 		    self.quit()
@@ -258,7 +229,7 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    print "Creating game object..."
+    print "Loading..."
     game = Game()
     print "Done. Starting run method"
     game.run()
