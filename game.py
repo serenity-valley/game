@@ -211,7 +211,7 @@ class Game(object):
             # update (the game must have been suspended for some
             # reason, and we don't want it to "jump forward"
             # suddenly)
-            #
+            
             if self.time_passed > 100:
                 continue
            
