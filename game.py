@@ -14,7 +14,7 @@ from widgets import *
 #You were importing all widgets anyway, and there was an unknown error. 
 
 class Game(object):
-    print "Setting global Game params."
+    print("Setting global Game params.")
     # Game parameters
     BG_TILE_IMG = 'images/wood2.png'
     BUTTON_BGIMG = 'images/x.png'
@@ -28,7 +28,7 @@ class Game(object):
         
     def __init__(self):
         pygame.init()
-        print "Pygame started."
+        print("Pygame started.")
         
         #set up screen and background
         self.screen = pygame.display.set_mode(
@@ -38,7 +38,7 @@ class Game(object):
         
            #Drawing a handy MessageBoard widget
         #Can use these for any text.
-        print "Configuring tboard MessageBoard params."
+        print("Configuring tboard MessageBoard params.")
         self.tboard_text = ['This is a test.']
         self.tboard_x = 120
         self.tboard_y = 120
@@ -56,7 +56,7 @@ class Game(object):
             font=('comic sans', 18),
             font_color=pygame.Color('yellow'))
     
-	print "Moving on to buttons..."        
+	print('Moving on to buttons...')
     
 	self.button_bgimgs = ['images/x.png']
 	#self.button_width = self.button_bgimgs[0].get_width()
@@ -73,7 +73,7 @@ class Game(object):
                                 imgnames=self.button_bgimgs,
                                 attached=self.tboard)
         
-	print "Created close button."
+	print("Created close button.")
  	
 	self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
@@ -85,7 +85,7 @@ class Game(object):
 								text="Toggle",
 								textcolor=(255,255,255))
         
-	print "Created toggle button."
+	print("Created toggle button.")
 	
 	self.clockImg = Images(self.screen,
 					'images/clock.png',
@@ -134,7 +134,7 @@ class Game(object):
 	self.options = dict(debug=True, 
                 draw_grid=False)
          
-	print "Done setting game options, exiting Game init."
+	print("Done setting game options, exiting Game init.")
         
     def xy2coord(self, pos):
         """ Convert a (x, y) pair to a (nrow, ncol) coordinate
@@ -197,7 +197,7 @@ class Game(object):
 			obj.draw()
         
     def run(self):
-        print "Beginning run sequence."
+        print("Beginning run sequence.")
         # The main game loop
         #
         while True:
@@ -258,7 +258,7 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    print "Creating game object..."
+    print("Creating game object...")
     game = Game()
-    print "Done. Starting run method"
+    print("Done. Starting run method")
     game.run()
