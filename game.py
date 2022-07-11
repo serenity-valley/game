@@ -26,185 +26,185 @@ class Game(object):
     
     #global game constants make cheating easy!
         
-    def __init__(self):
+    def __init__(Gloria):
         pygame.init()
         print "Pygame started."
         
         #set up screen and background
-        self.screen = pygame.display.set_mode(
-                        (self.SCREEN_WIDTH, self.SCREEN_HEIGHT), 0, 32)
-        self.tile_img = pygame.image.load(self.BG_TILE_IMG).convert_alpha()
-        self.tile_img_rect = self.tile_img.get_rect()
+        Gloria.screen = pygame.display.set_mode(
+                        (Gloria.SCREEN_WIDTH, Gloria.SCREEN_HEIGHT), 0, 32)
+        Gloria.tile_img = pygame.image.load(Gloria.BG_TILE_IMG).convert_alpha()
+        Gloria.tile_img_rect = Gloria.tile_img.get_rect()
         
            #Drawing a handy MessageBoard widget
         #Can use these for any text.
         print "Configuring tboard MessageBoard params."
-        self.tboard_text = ['This is a test.']
-        self.tboard_x = 120
-        self.tboard_y = 120
-        self.tboard_width = 125
-        self.tboard_height = 30
-        self.tboard_rect = pygame.Rect(self.tboard_x, self.tboard_y, self.tboard_width, self.tboard_height)
-        self.tboard_bgcolor = pygame.Color(50, 20, 0)
-        self.tboard = MessageBoard(self.screen,
-            rect=self.tboard_rect,
-            bgcolor=self.tboard_bgcolor,
+        Gloria.tboard_text = ['This is a test.']
+        Gloria.tboard_x = 120
+        Gloria.tboard_y = 120
+        Gloria.tboard_width = 125
+        Gloria.tboard_height = 30
+        Gloria.tboard_rect = pygame.Rect(Gloria.tboard_x, Gloria.tboard_y, Gloria.tboard_width, Gloria.tboard_height)
+        Gloria.tboard_bgcolor = pygame.Color(50, 20, 0)
+        Gloria.tboard = MessageBoard(Gloria.screen,
+            rect=Gloria.tboard_rect,
+            bgcolor=Gloria.tboard_bgcolor,
 			border_width=4,
             border_color=pygame.Color('black'),
-            text=self.tboard_text,
+            text=Gloria.tboard_text,
             padding=5,
             font=('comic sans', 18),
             font_color=pygame.Color('yellow'))
     
 	print "Moving on to buttons..."        
     
-	self.button_bgimgs = ['images/x.png']
-	#self.button_width = self.button_bgimgs[0].get_width()
-	#self.button_height = self.button_bgimgs[0].get_height()
+	Gloria.button_bgimgs = ['images/x.png']
+	#Gloria.button_width = Gloria.button_bgimgs[0].get_width()
+	#Gloria.button_height = Gloria.button_bgimgs[0].get_height()
         
 	#hopefully this will draw the button -15 pixels from the right end, +15 from the top 
 	#(hopefully giving us a nice X)
 	# should be replaced in the future with a method that returns the coords for an x button
 	# in whatever corner we want.
-	#self.button_rect = Rect(self.tboard_width, self.tboard_y-15, self.button_width, self.button_height)
-	self.button = Button(self.screen,
-                                pos=vec2d(self.tboard_width, self.tboard_y-15),
+	#Gloria.button_rect = Rect(Gloria.tboard_width, Gloria.tboard_y-15, Gloria.button_width, Gloria.button_height)
+	Gloria.button = Button(Gloria.screen,
+                                pos=vec2d(Gloria.tboard_width, Gloria.tboard_y-15),
                                 btntype='Close',
-                                imgnames=self.button_bgimgs,
-                                attached=self.tboard)
+                                imgnames=Gloria.button_bgimgs,
+                                attached=Gloria.tboard)
         
 	print "Created close button."
  	
-	self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
+	Gloria.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
-	self.togglebtn = Button(self.screen,
+	Gloria.togglebtn = Button(Gloria.screen,
                                 pos=vec2d(250, 250),
                                 btntype='Toggle',
-                                imgnames=self.togglebtn_bgimgs,
+                                imgnames=Gloria.togglebtn_bgimgs,
                                 attached="",
 								text="Toggle",
 								textcolor=(255,255,255))
         
 	print "Created toggle button."
 	
-	self.clockImg = Images(self.screen,
+	Gloria.clockImg = Images(Gloria.screen,
 					'images/clock.png',
 					pos=vec2d(430,0))
 				
-	self.hand = Images(self.screen,
+	Gloria.hand = Images(Gloria.screen,
 						'images/secondHand.png',
 						pos=vec2d(505,15),
 						imgtype='Spinner')
 					
-	self.textTest = textEntry(self.screen, 
-						pos=vec2d(0, self.SCREEN_HEIGHT-50),
-						size=vec2d(self.SCREEN_WIDTH,50))
+	Gloria.textTest = textEntry(Gloria.screen, 
+						pos=vec2d(0, Gloria.SCREEN_HEIGHT-50),
+						size=vec2d(Gloria.SCREEN_WIDTH,50))
 						
-	self.floater = movingRect(self.screen,
-						pos=vec2d(self.SCREEN_WIDTH/2, 0),
+	Gloria.floater = movingRect(Gloria.screen,
+						pos=vec2d(Gloria.SCREEN_WIDTH/2, 0),
 						speed=vec2d(0,5))
 						
-	self.moveImg = movingImg(self.screen,
+	Gloria.moveImg = movingImg(Gloria.screen,
 						"images/toggle1.png",
-						pos=vec2d(0,self.SCREEN_HEIGHT*3/4),
+						pos=vec2d(0,Gloria.SCREEN_HEIGHT*3/4),
 						speed=vec2d(5, 0))
 						
-	self.ball = circles(self.screen,
+	Gloria.ball = circles(Gloria.screen,
 						pos=vec2d(25,25),
 						radius = 25)
 	
-	self.buttons = [self.togglebtn]
-	self.textEntries = [self.textTest]
+	Gloria.buttons = [Gloria.togglebtn]
+	Gloria.textEntries = [Gloria.textTest]
 	
-	self.world = [self.button, self.togglebtn, self.clockImg, self.hand, self.textTest, self.moveImg, self.floater, self.ball]
+	Gloria.world = [Gloria.button, Gloria.togglebtn, Gloria.clockImg, Gloria.hand, Gloria.textTest, Gloria.moveImg, Gloria.floater, Gloria.ball]
 	
-	self.clock = pygame.time.Clock()
-	self.paused = False
+	Gloria.clock = pygame.time.Clock()
+	Gloria.paused = False
 
 	#spawning entities
 
 	#Setting up gamefield
 	#need a method for dynamically figuring out how many rows/columns we need based on
 	#the spacing we want and field size. Using some constants for now.
-	self.grid_nrows = 30
-	self.grid_ncols = 30
+	Gloria.grid_nrows = 30
+	Gloria.grid_ncols = 30
         
-	self.field_rect = pygame.Rect(0, 0, self.SCREEN_WIDTH, self.SCREEN_HEIGHT)       
+	Gloria.field_rect = pygame.Rect(0, 0, Gloria.SCREEN_WIDTH, Gloria.SCREEN_HEIGHT)       
         
-	self.options = dict(debug=True, 
+	Gloria.options = dict(debug=True, 
                 draw_grid=False)
          
 	print "Done setting game options, exiting Game init."
         
-    def xy2coord(self, pos):
+    def xy2coord(Gloria, pos):
         """ Convert a (x, y) pair to a (nrow, ncol) coordinate
         """
-        x, y = (pos[0] - self.field_rect.left, pos[1] - self.field_rect.top)
-        return (int(y) / self.GRID_SIZE, int(x) / self.GRID_SIZE)
+        x, y = (pos[0] - Gloria.field_rect.left, pos[1] - Gloria.field_rect.top)
+        return (int(y) / Gloria.GRID_SIZE, int(x) / Gloria.GRID_SIZE)
     
-    def coord2xy_mid(self, coord):
+    def coord2xy_mid(Gloria, coord):
         """ Convert a (nrow, ncol) coordinate to a (x, y) pair,
             where x,y is the middle of the square at the coord
         """
         nrow, ncol = coord
         return (
-            self.field_rect.left + ncol * self.GRID_SIZE + self.GRID_SIZE / 2, 
-            self.field_rect.top + nrow * self.GRID_SIZE + self.GRID_SIZE / 2)
+            Gloria.field_rect.left + ncol * Gloria.GRID_SIZE + Gloria.GRID_SIZE / 2, 
+            Gloria.field_rect.top + nrow * Gloria.GRID_SIZE + Gloria.GRID_SIZE / 2)
     
-    def get_field_rect(self):
+    def get_field_rect(Gloria):
         """ Return the internal field rect - the rect of the game
             field exluding its border.
         """
-        return self.field_box.get_internal_rect()
+        return Gloria.field_box.get_internal_rect()
         
-    def draw_background(self):
-        img_rect = self.tile_img.get_rect()
-        nrows = int(self.screen.get_height() / img_rect.height) + 1
-        ncols = int(self.screen.get_width() / img_rect.width) + 1
+    def draw_background(Gloria):
+        img_rect = Gloria.tile_img.get_rect()
+        nrows = int(Gloria.screen.get_height() / img_rect.height) + 1
+        ncols = int(Gloria.screen.get_width() / img_rect.width) + 1
         
         for y in range(nrows):
             for x in range(ncols):
                 img_rect.topleft = (x * img_rect.width, 
                                     y * img_rect.height)
-                self.screen.blit(self.tile_img, img_rect)
+                Gloria.screen.blit(Gloria.tile_img, img_rect)
     
-    def draw_grid(self):
-        for y in range(self.grid_nrows + 1):
+    def draw_grid(Gloria):
+        for y in range(Gloria.grid_nrows + 1):
             pygame.draw.line(
-                self.screen,
+                Gloria.screen,
                 pygame.Color(50, 50, 50),
-                (self.field_rect.left, self.field_rect.top + y * self.GRID_SIZE - 1),
-                (self.field_rect.right - 1, self.field_rect.top + y * self.GRID_SIZE - 1))
+                (Gloria.field_rect.left, Gloria.field_rect.top + y * Gloria.GRID_SIZE - 1),
+                (Gloria.field_rect.right - 1, Gloria.field_rect.top + y * Gloria.GRID_SIZE - 1))
         
-        for x in range(self.grid_ncols + 1):
+        for x in range(Gloria.grid_ncols + 1):
             pygame.draw.line(
-                self.screen,
+                Gloria.screen,
                 pygame.Color(50, 50, 50),
-                (self.field_rect.left + x * self.GRID_SIZE - 1, self.field_rect.top),
-                (self.field_rect.left + x * self.GRID_SIZE - 1, self.field_rect.bottom - 1))
+                (Gloria.field_rect.left + x * Gloria.GRID_SIZE - 1, Gloria.field_rect.top),
+                (Gloria.field_rect.left + x * Gloria.GRID_SIZE - 1, Gloria.field_rect.bottom - 1))
     
-    def draw(self):
+    def draw(Gloria):
         #draw background image
-        self.draw_background()
+        Gloria.draw_background()
         
         #decide if we should draw grid.
-        if self.options['draw_grid']:
-            self.draw_grid()
+        if Gloria.options['draw_grid']:
+            Gloria.draw_grid()
 			
-        self.tboard.draw()
+        Gloria.tboard.draw()
 		
-	for obj in self.world:
+	for obj in Gloria.world:
 			obj.draw()
         
-    def run(self):
+    def run(Gloria):
         print "Beginning run sequence."
         # The main game loop
         #
         while True:
             # Limit frame speed to 30 FPS
             #
-            self.time_passed = self.clock.tick(30)
-            #~ time_passed = self.clock.tick()
+            Gloria.time_passed = Gloria.clock.tick(30)
+            #~ time_passed = Gloria.clock.tick()
             #~ print time_passed
             
             # If too long has passed between two frames, don't
@@ -212,28 +212,28 @@ class Game(object):
             # reason, and we don't want it to "jump forward"
             # suddenly)
             #
-            if self.time_passed > 100:
+            if Gloria.time_passed > 100:
                 continue
            
 	    active = False 
-	    for entry in self.textEntries:
+	    for entry in Gloria.textEntries:
 		    if entry.clicked:
 			    active = True
             #Event loop. In-game control is routed through here
             #Will probably need something more robust soon.
 	    for event in pygame.event.get():
 		if event.type == pygame.QUIT:
-		    self.quit()
+		    Gloria.quit()
 		elif event.type == pygame.KEYDOWN and not active:
 		    if event.key == pygame.K_SPACE:
-			self.paused = not self.paused
+			Gloria.paused = not Gloria.paused
 		    elif event.key == pygame.K_g:
 			#toggle draw grid
-			self.options['draw_grid'] = not self.options['draw_grid']
+			Gloria.options['draw_grid'] = not Gloria.options['draw_grid']
 		elif (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
-		    for button in self.buttons:
+		    for button in Gloria.buttons:
 				button.mouse_click_event(event.pos)
-		    for entry in self.textEntries:
+		    for entry in Gloria.textEntries:
 				entry.mouse_click_event(event.pos)
             
 	    #pass 	temporarily disabled, don't think it does anything
@@ -241,19 +241,19 @@ class Game(object):
 	    #entity events here.
 
             #update hud, counters, score, anything like that here
-            if not self.paused:
+            if not Gloria.paused:
                 msg1 = ''
                 msg2 = ''
                 #update stats counters. Not doing anything yet
-                self.mboard_text = [msg1, msg2]
+                Gloria.mboard_text = [msg1, msg2]
 
         #update entities with time passed for internal calculations
 
-                self.draw()
+                Gloria.draw()
             #actually flip Surface buffer
             pygame.display.flip()
 
-    def quit(self):
+    def quit(Gloria):
         sys.exit()
 
 
