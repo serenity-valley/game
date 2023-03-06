@@ -21,7 +21,7 @@ class SimpleAnimation(object):
                 Duration of the animation (in ms). If -1, the 
                 animation will have indefinite duration.
         """
-	print "starting animation."
+	print("starting animation.")
         self.screen = screen
         self.images = images
         self.pos = pos
