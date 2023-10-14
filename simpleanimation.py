@@ -6,7 +6,7 @@ from utils import Timer
 
 class SimpleAnimation(object):
     """ A simple animation. Scrolls cyclically through a list of
-        images, drawing them onto the screen in the same posision.    
+        images, drawing them onto the screen in the same positsion.    
     """
     def __init__(self, screen, pos, images, scroll_period, duration=-1):
         """ Create an animation.        
