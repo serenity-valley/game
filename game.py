@@ -28,7 +28,7 @@ class Game(object):
         
     def __init__(self):
         pygame.init()
-        print "Pygame started."
+        print ("Pygame started.") #missing a bracket for the prit statment
         
         #set up screen and background
         self.screen = pygame.display.set_mode(
@@ -38,7 +38,7 @@ class Game(object):
         
            #Drawing a handy MessageBoard widget
         #Can use these for any text.
-        print "Configuring tboard MessageBoard params."
+        print ("Configuring tboard MessageBoard params.") #syntax error no brackets
         self.tboard_text = ['This is a test.']
         self.tboard_x = 120
         self.tboard_y = 120
@@ -56,7 +56,7 @@ class Game(object):
             font=('comic sans', 18),
             font_color=pygame.Color('yellow'))
     
-	print "Moving on to buttons..."        
+	print ("Moving on to buttons...") #syntax error missing brackts        
     
 	self.button_bgimgs = ['images/x.png']
 	#self.button_width = self.button_bgimgs[0].get_width()
@@ -73,7 +73,7 @@ class Game(object):
                                 imgnames=self.button_bgimgs,
                                 attached=self.tboard)
         
-	print "Created close button."
+	print ("Created close button.") #syntax error: no brackets
  	
 	self.togglebtn_bgimgs = ['images/toggle1.png', 'images/toggle2.png']
         
@@ -85,7 +85,7 @@ class Game(object):
 								text="Toggle",
 								textcolor=(255,255,255))
         
-	print "Created toggle button."
+	print ("Created toggle button.") #syntax error no brackets
 	
 	self.clockImg = Images(self.screen,
 					'images/clock.png',
