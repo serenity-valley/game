@@ -12,7 +12,7 @@ APPLY_FIXES: all
 
 # If you use ENABLE_LINTERS variable, all other linters will be disabled by
 # default
-# ENABLE_LINTERS:
+ENABLE_LINTERS: PYTHON, BASH, YAML
 
 # DISABLE:
   # - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
