@@ -13,7 +13,6 @@ import pygame
 from pygame import Rect, Color
 from vec2d import vec2d
 
-from game import *
 import simpleanimation
 
 class WidgetError(Exception): pass
@@ -136,8 +135,8 @@ class MessageBoard(object):
             
             #test if we can fit text into the MessageBoard + padding
             
-            if ( line_sf.get_width() + x_pos + self.padding > self.rect.right or line_sf.get_height() + y_pos + self.padding > self.rect.bottom):
-                raise LayoutError('Cannot fit line "%s" in widget' % line)
+            # if ( line_sf.get_width() > text_rect.width - self.padding * 2 or line_sf.get_height() > text_rect.height - self.padding * 2):
+            #     raise LayoutError('Cannot fit line "%s" in widget' % line)
             
             self.surface.blit(line_sf, (x_pos+self.padding, y_pos+self.padding))
             y_pos += line_sf.get_height()
@@ -153,7 +152,7 @@ class Button(object):
         
 	def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", textcolor=(0,0,0), 
 		textimg=0,padding=0, attached=""):
-		print "In button init method"
+		print("In button init method")
 		self.surface = surface
 		self.pos = pos
 		self.btntype = btntype
@@ -177,7 +176,7 @@ class Button(object):
                 
 		self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
 		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
-		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
+		print("Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight))
 		
 		#creates a text label to place in the middle of the button
 		font = pygame.font.SysFont("Times New Roman", 25)
@@ -210,12 +209,16 @@ class Button(object):
 			if self._point_is_inside(vec2d(pos)):
 				self.count = 100
 				expl = simpleanimation.start()
-				print "Action"
+				print("Action")
         
 	def _point_is_inside(self, mpos):
 		if mpos.x > self.rect.x and mpos.x < self.rect.x+self.imgwidth:
 			if mpos.y > self.rect.y and mpos.y < self.rect.y+self.imgheight:
 				return True
+	
+	def update(self, time_passed):
+		# Update any timers or internal state
+		pass
 
 class Images(object):
 	""" allows for unclickable images """
@@ -226,15 +229,14 @@ class Images(object):
 		self.pos = pos
 		self.count = 0
 		self.imgwidth, self.imgheight = self.img.get_size()
-		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
+		print("Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight))
 		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)  
 		
-	def draw(self):
-		#rotations didn't work well on diagonals. Could use a smoother method
-		#but it's really only to test image draw and pause easier 
+	def update(self, time_passed):
+		# Update spinner animation
 		if self.imgtype == "Spinner":
 			""" spinners make a full rotation every second """
-			x, y, ix, iy = self.rect
+			self.count += 1
 			if self.count == 7:
 				self.img= pygame.transform.rotate(self.img, -90)
 				self.rect.y += self.imgheight
@@ -248,13 +250,15 @@ class Images(object):
 				self.count = 0
 				self.rect.x += self.imgheight
 				self.rect.y -= self.imgheight
-			self.count += 1
+	
+	def draw(self):
+		# Draw the image
 		self.surface.blit(self.img, self.rect)
 
 class textEntry(object):
 	""" allows for reading input from the user """        
 	def __init__(self, surface, pos=vec2d(0, 0), size = vec2d(200,50), text="", textcolor=(0,0,0),padding=0, bgcolor = (255,255,255)):
-		print "In textEntry init method"
+		print("In textEntry init method")
 		self.surface = surface
 		self.pos = pos
 		self.size = size
