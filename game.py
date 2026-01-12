@@ -41,7 +41,7 @@ class Game(object):
         )
 
         # Load the image using os.path.join for better path handling and convert for optimized blitting
-        image_path = os.path.join("images", self.BG_TILE_IMG) # Adjust "images" if your path is different
+        image_path = os.path.join("images", self.BG_TILE_IMG) 
         self.tile_img = pygame.image.load(image_path).convert_alpha()
 
         # Get the rect for positioning and manipulation
