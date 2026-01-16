@@ -31,11 +31,22 @@ class Game(object):
         print "Pygame started."
         
         #set up screen and background
+
+
+        # Let Pygame select the optimal color depth and use performance flags
         self.screen = pygame.display.set_mode(
-                        (self.SCREEN_WIDTH, self.SCREEN_HEIGHT), 0, 32)
-        self.tile_img = pygame.image.load(self.BG_TILE_IMG).convert_alpha()
+            (self.SCREEN_WIDTH, self.SCREEN_HEIGHT),
+            pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.SCALED,  # Use flags for performance/scaling
+            0  # Let Pygame choose the best color depth
+        )
+
+        # Load the image using os.path.join for better path handling and convert for optimized blitting
+        image_path = os.path.join("images", self.BG_TILE_IMG) 
+        self.tile_img = pygame.image.load(image_path).convert_alpha()
+
+        # Get the rect for positioning and manipulation
         self.tile_img_rect = self.tile_img.get_rect()
-        
+
            #Drawing a handy MessageBoard widget
         #Can use these for any text.
         print "Configuring tboard MessageBoard params."
