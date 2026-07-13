@@ -153,7 +153,7 @@ class Button(object):
         
 	def __init__(self, surface, pos=vec2d(0, 0), btntype="", imgnames=[], text="", textcolor=(0,0,0), 
 		textimg=0,padding=0, attached=""):
-		print "In button init method"
+		print("In button init method")
 		self.surface = surface
 		self.pos = pos
 		self.btntype = btntype
@@ -177,7 +177,7 @@ class Button(object):
                 
 		self.imgwidth, self.imgheight = self.imgs[self.toggle].get_size()
 		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)
-		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
+		print("Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight))
 		
 		#creates a text label to place in the middle of the button
 		font = pygame.font.SysFont("Times New Roman", 25)
@@ -210,7 +210,7 @@ class Button(object):
 			if self._point_is_inside(vec2d(pos)):
 				self.count = 100
 				expl = simpleanimation.start()
-				print "Action"
+				print("Action")
         
 	def _point_is_inside(self, mpos):
 		if mpos.x > self.rect.x and mpos.x < self.rect.x+self.imgwidth:
@@ -226,7 +226,7 @@ class Images(object):
 		self.pos = pos
 		self.count = 0
 		self.imgwidth, self.imgheight = self.img.get_size()
-		print "Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight)
+		print("Image dimensions are: " + str(self.imgwidth) + ", " + str(self.imgheight))
 		self.rect = Rect(self.pos.x, self.pos.y, self.imgwidth, self.imgheight)  
 		
 	def draw(self):
@@ -254,7 +254,7 @@ class Images(object):
 class textEntry(object):
 	""" allows for reading input from the user """        
 	def __init__(self, surface, pos=vec2d(0, 0), size = vec2d(200,50), text="", textcolor=(0,0,0),padding=0, bgcolor = (255,255,255)):
-		print "In textEntry init method"
+		print("In textEntry init method")
 		self.surface = surface
 		self.pos = pos
 		self.size = size
