@@ -1,3 +1,6 @@
+'''testing testing
+wow wow wowo'''
+
 import os, sys
 from random import randint, choice
 from math import sin, cos, radians
